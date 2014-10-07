@@ -384,6 +384,8 @@ static void read_mapinfo(FILE *fp, stats_t* stats, bool* foundSwapPss)
                 swapped_out = temp;
             } else if (line[0] == 'S' && sscanf(line, "SwapPss: %d kB", &temp) == 1) {
                 *foundSwapPss = true;
+            } else if (line[0] == 'A' || line[0] == 'K' || line[0] == 'M' || line[0] == 'L') {
+                continue;
                 swapped_out_pss = temp;
             } else if (sscanf(line, "%" SCNx64 "-%" SCNx64 " %*s %*x %*x:%*x %*d", &start, &end) == 2) {
                 // looks like a new mapping
