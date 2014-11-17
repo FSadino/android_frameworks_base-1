@@ -246,6 +246,7 @@ class TelephonyIcons {
     static final int QS_ICON_1X = R.drawable.ic_qs_signal_1x;
     static final int QS_ICON_CARRIER_NETWORK_CHANGE =
             R.drawable.ic_qs_signal_carrier_network_change_animation;
+    static final boolean DEBUG = false;
 
     static final int QS_ICON_DATA_DISABLED = R.drawable.ic_qs_data_disabled;
 
