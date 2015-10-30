@@ -406,6 +406,10 @@ public final class ActivityManagerService extends ActivityManagerNative
     // here so that while the job scheduler can depend on AMS, the other way around
     // need not be the case.
     public static final String ACTION_TRIGGER_IDLE = "com.android.server.ACTION_TRIGGER_IDLE";
+    private static final String ACTION_POWER_OFF_ALARM =
+            "org.codeaurora.alarm.action.POWER_OFF_ALARM";
+
+    private static final String POWER_OFF_ALARM = "powerOffAlarm";
 
     /** Control over CPU and battery monitoring */
     // write battery stats every 30 minutes.
@@ -3966,6 +3970,15 @@ public final class ActivityManagerService extends ActivityManagerNative
         }
 
         return true;
+    }
+
+    /**
+     * If system is power off alarm boot mode, we need to start alarm UI.
+     */
+    void startAlarmActivityLocked() {
+        Intent intent = new Intent(ACTION_POWER_OFF_ALARM);
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+        mContext.startActivityAsUser(intent, UserHandle.CURRENT);
     }
 
     private ActivityInfo resolveActivityInfo(Intent intent, int flags, int userId) {
@@ -13445,18 +13458,13 @@ public final class ActivityManagerService extends ActivityManagerNative
 
             // Start up initial activity.
             mBooting = true;
-            // Enable home activity for system user, so that the system can always boot
-            if (UserManager.isSplitSystemUser()) {
-                ComponentName cName = new ComponentName(mContext, SystemUserHomeActivity.class);
-                try {
-                    AppGlobals.getPackageManager().setComponentEnabledSetting(cName,
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED, 0,
-                            UserHandle.USER_SYSTEM);
-                } catch (RemoteException e) {
-                    throw e.rethrowAsRuntimeException();
-                }
+            startHomeActivityLocked(mCurrentUserId, "systemReady");
+
+            // start the power off alarm by boot mode
+            boolean isAlarmBoot = SystemProperties.getBoolean("ro.alarm_boot", false);
+            if (isAlarmBoot) {
+                startAlarmActivityLocked();
             }
-            startHomeActivityLocked(currentUserId, "systemReady");
 
             try {
                 if (AppGlobals.getPackageManager().hasSystemUidErrors()) {

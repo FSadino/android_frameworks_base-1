@@ -106,6 +106,8 @@ public class AlarmManager {
      */
     public static final int ELAPSED_REALTIME = 3;
 
+     * Set as 5 to make it be compatible with android_alarm_type.
+    public static final int RTC_POWEROFF_WAKEUP = 5;
     /**
      * Broadcast Action: Sent after the value returned by
      * {@link #getNextAlarmClock()} has changed.
