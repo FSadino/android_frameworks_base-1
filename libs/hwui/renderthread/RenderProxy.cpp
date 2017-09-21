@@ -122,7 +122,9 @@ CREATE_BRIDGE1(loadSystemProperties, CanvasContext* context) {
 bool RenderProxy::loadSystemProperties() {
     SETUP_TASK(loadSystemProperties);
     args->context = mContext;
-    return (bool) postAndWait(task);
+    bool ret = mContext->mCanvas == NULL;
+    post(task);
+    return ret;
 }
 
 CREATE_BRIDGE2(setName, CanvasContext* context, const char* name) {

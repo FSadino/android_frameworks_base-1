@@ -175,6 +175,7 @@ private:
     // TODO: Replace with something better for layer & other GL object
     // lifecycle tracking
     friend class android::uirenderer::RenderState;
+    friend class RenderProxy;
 
     void setSurface(Surface* window);
 
