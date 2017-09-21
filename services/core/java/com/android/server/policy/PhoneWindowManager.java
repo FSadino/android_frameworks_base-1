@@ -144,6 +144,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+import android.text.Html;
 
 import com.android.internal.R;
 import com.android.internal.annotations.GuardedBy;
@@ -7755,10 +7756,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
              if (always && (currentPackageName != null)) {
     // Only display the current package name if the main message says "Optimizing app N of M".
    // We don't want to do this when the message says "Starting apps" or "Finishing boot", etc.
-    mBootMsgDialog.setMessage(msg + "\n" + currentPackageName);
-        }
-   else {
-   mBootMsgDialog.setMessage(msg);
+    mBootMsgDialog.setMessage(Html.fromHtml(msg + "<br><b>" + currentPackageName + "</b>"));
+         }
+    else {
+    mBootMsgDialog.setMessage(msg);
                 }
             }
         });
