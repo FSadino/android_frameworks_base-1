@@ -1167,11 +1167,6 @@ public interface WindowManagerPolicy {
     public boolean inKeyguardRestrictedKeyInputMode();
 
     /**
-    * name of package being worked on during boot time message
-    */
-    public void setPackageName(String pkgName);
-
-    /**
      * Ask the policy to dismiss the keyguard, if it is currently shown.
      */
     public void dismissKeyguardLw();
