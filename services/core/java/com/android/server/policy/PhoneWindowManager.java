@@ -144,7 +144,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
-import android.text.Html;
 
 import com.android.internal.R;
 import com.android.internal.annotations.GuardedBy;
@@ -7740,10 +7739,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.setCancelable(false);
                     mBootMsgDialog.show();
                 }
-    mBootMsgDialog.setMessage(Html.fromHtml(msg + "<br><b>" + currentPackageName + "</b>"));
-         }
-    else {
-    mBootMsgDialog.setMessage(msg);
+    mBootMsgDialog.setMessage(msg + "\n" + currentPackageName);
+        }
+   else {
+   mBootMsgDialog.setMessage(msg);
             }
         });
     }
