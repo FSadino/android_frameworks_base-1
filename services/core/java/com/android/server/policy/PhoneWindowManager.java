@@ -7739,10 +7739,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mBootMsgDialog.setCancelable(false);
                     mBootMsgDialog.show();
                 }
-    mBootMsgDialog.setMessage(msg + "\n" + currentPackageName);
-        }
-   else {
-   mBootMsgDialog.setMessage(msg);
+                mBootMsgDialog.setMessage(msg);
             }
         });
     }
