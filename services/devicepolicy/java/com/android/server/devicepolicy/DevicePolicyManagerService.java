@@ -71,7 +71,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.PackageManagerInternal;
 import android.content.pm.ParceledListSlice;
-import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.content.pm.UserInfo;
@@ -124,7 +123,6 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.ArrayMap;
 import android.util.ArraySet;
-import android.util.EventLog;
 import android.util.Log;
 import android.util.Pair;
 import android.util.Slog;
@@ -8624,10 +8622,6 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                     return false;
                 }
                 final PackageManager packageManager = mContext.getPackageManager();
-                if (!isRuntimePermission(permission)) {
-                    EventLog.writeEvent(0x534e4554, "62623498", user.getIdentifier(), "");
-                    return false;
-                }
                 switch (grantState) {
                     case DevicePolicyManager.PERMISSION_GRANT_STATE_GRANTED: {
                         packageManager.grantRuntimePermission(packageName, permission, user);
@@ -8651,8 +8645,6 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 }
                 return true;
             } catch (SecurityException se) {
-                return false;
-            } catch (NameNotFoundException e) {
                 return false;
             } finally {
                 mInjector.binderRestoreCallingIdentity(ident);
@@ -8697,13 +8689,6 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
         } catch (RemoteException re) {
             throw new RuntimeException("Package manager has died", re);
         }
-    }
-
-    public boolean isRuntimePermission(String permissionName) throws NameNotFoundException {
-        final PackageManager packageManager = mInjector.getPackageManager();
-        PermissionInfo permissionInfo = packageManager.getPermissionInfo(permissionName, 0);
-        return (permissionInfo.protectionLevel & PermissionInfo.PROTECTION_MASK_BASE)
-                == PermissionInfo.PROTECTION_DANGEROUS;
     }
 
     @Override
